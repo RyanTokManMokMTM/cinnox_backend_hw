@@ -14,7 +14,7 @@ type DefaultModel struct {
 }
 
 func NewMongodb(c config.Config) *mongo.Database {
-	uri := fmt.Sprintf("mongodb://%s:%s@localhost:27017", c.Mongo.UserName, c.Mongo.Password)
+	uri := fmt.Sprintf("mongodb://%s:%s@%s:%d", c.Mongo.UserName, c.Mongo.Password, c.Mongo.Host, c.Mongo.Port)
 	opt := options.Client().ApplyURI(uri)
 
 	//connect to db

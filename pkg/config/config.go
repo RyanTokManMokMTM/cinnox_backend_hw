@@ -10,6 +10,8 @@ type DBSection struct {
 	UserName string
 	Password string
 	Schema   string
+	Host     string
+	Port     int
 }
 
 type Config struct {

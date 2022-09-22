@@ -40,6 +40,8 @@ func main() {
 	if err := loadSetting(&c); err != nil {
 		panic(err.Error())
 	}
+
+	//Server Setting
 	gin.SetMode(c.Server.Mode)
 	ctx := svc.NewServiceContext(c)
 	route := handler.RegisterHandlers(ctx)
