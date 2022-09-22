@@ -4,11 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 	"github.com/ryantokmanmokmtm/cinnox_backend_hw/global"
-	"github.com/sirupsen/logrus"
+	"github.com/ryantokmanmokmtm/cinnox_backend_hw/internal/logic"
+	"github.com/ryantokmanmokmtm/cinnox_backend_hw/internal/svc"
 	"net/http"
 )
 
-func WebhookHandler() func(ctx *gin.Context) {
+func WebhookHandler(svcCtx *svc.ServiceContext) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		events, err := global.Line.ParseRequest(ctx.Request)
 		if err != nil {
@@ -20,24 +21,8 @@ func WebhookHandler() func(ctx *gin.Context) {
 			return
 		}
 
-		for _, event := range events {
-			//check event type
-			if event.Type == linebot.EventTypeMessage {
-				switch msg := event.Message.(type) {
-				case *linebot.TextMessage:
-					global.Log.WithFields(logrus.Fields{
-						"Line Event": "text message",
-					}).Info("received message %s", msg.Text)
+		service := logic.NewWebhookLogic(svcCtx, ctx)
+		service.EventHandler(events)
 
-					if _, err := global.Line.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("Hello Testing")).Do(); err != nil {
-						global.Log.WithFields(logrus.Fields{
-							"Line Event": "text message",
-						}).Info(err)
-
-						ctx.AbortWithStatus(http.StatusInternalServerError)
-					}
-				}
-			}
-		}
 	}
 }

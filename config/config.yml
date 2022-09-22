@@ -2,5 +2,9 @@ Server:
   Port: 8080
   Host: 0.0.0.0
   Mode: "debug"
-  
+
+DB:
+  UserName: root
+  Password: admin
+  Schema: LineMessage
 
