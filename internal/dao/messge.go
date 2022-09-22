@@ -21,7 +21,7 @@ func (d *DAO) InsertOne(ctx context.Context, userToken, msg string, timeStamp in
 	return m.InsertOne(d.DB, ctx)
 }
 
-func (d *DAO) FindOne(ctx context.Context, userToken string) ([]*message.Message, error) {
+func (d *DAO) FindAll(ctx context.Context, userToken string) (*[]message.Message, error) {
 	m := &message.Message{
 		UserToken: userToken,
 	}
@@ -31,5 +31,5 @@ func (d *DAO) FindOne(ctx context.Context, userToken string) ([]*message.Message
 		return nil, errors.New("collection not found")
 	}
 
-	return m.FindOne(d.DB, ctx)
+	return m.FindAll(d.DB, ctx)
 }
