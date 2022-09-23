@@ -6,28 +6,34 @@
 * Line SDK
 
 ### Clone the project
-``` git clone https://github.com/RyanTokManMokMTM/cinnox_backend_hw.git```
+```
+git clone https://github.com/RyanTokManMokMTM/cinnox_backend_hw.git
+```
 
 ### Run
 > *Add Line bot as friend.*  **@146upfgh**
 
 **In Local Machine**  
 1. Start up a **mongodb**.(*This project run mongodb in Docker*)  
-```make env```
+```
+make env
+```
 
 2. Start the API Server  
-```make local ```
+```
+make local
+```
 ---
 **In Docker Container.** (**Using Docker-Compose**)  
 1. Start the API Server  
-```make up```
+```
+make up
+```
 2. Shutdown the API Server  
-```make down```
+```
+make down
+```
 
 
 ### How to play
-Demo Video:  
-
-<video width="320" height="240" controls>
-    <source src="https://github.com/RyanTokManMokMTM/cinnox_backend_hw/blob/main/resources/demo.mp4" type="video/mp4">
-</video>
+[Demo Video](https://www.youtube.com/watch?v=TbZ-kLaAEoo)
