@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/ryantokmanmokmtm/cinnox_backend_hw/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -29,8 +28,5 @@ func NewMongodb(c config.Config) *mongo.Database {
 	}
 
 	database := client.Database(c.Mongo.Schema)
-	if database == nil {
-		panic(errors.New("database not exist"))
-	}
 	return database
 }

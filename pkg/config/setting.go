@@ -8,9 +8,9 @@ type Setting struct {
 	vp *viper.Viper
 }
 
-func NewSetting() (*Setting, error) {
+func NewSetting(fileName string) (*Setting, error) {
 	vp := viper.New()
-	vp.SetConfigName("config")
+	vp.SetConfigName(fileName)
 	vp.SetConfigType("yml")
 	vp.AddConfigPath("config/")
 

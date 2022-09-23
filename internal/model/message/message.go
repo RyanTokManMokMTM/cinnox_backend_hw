@@ -2,7 +2,6 @@ package message
 
 import (
 	"context"
-	"errors"
 	"github.com/ryantokmanmokmtm/cinnox_backend_hw/global"
 	"github.com/ryantokmanmokmtm/cinnox_backend_hw/internal/model"
 	"github.com/sirupsen/logrus"
@@ -21,12 +20,7 @@ func (m *Message) CollectionName() string {
 	return "message"
 }
 
-func (m *Message) InsertOne(db *mongo.Database, ctx context.Context) error {
-	collection := db.Collection(m.CollectionName())
-	if collection == nil {
-		global.Log.Errorf("Collection %s not exists.", m.CollectionName())
-		return errors.New("collection not exists")
-	}
+func (m *Message) InsertOne(collection *mongo.Collection, ctx context.Context) error {
 
 	_, err := collection.InsertOne(ctx, m)
 	if err != nil {
@@ -41,11 +35,7 @@ func (m *Message) InsertOne(db *mongo.Database, ctx context.Context) error {
 	return nil
 }
 
-func (m *Message) FindAll(db *mongo.Database, ctx context.Context) (*[]Message, error) {
-	collection := db.Collection(m.CollectionName())
-	if collection == nil {
-		return nil, errors.New("collection not exists")
-	}
+func (m *Message) FindAll(collection *mongo.Collection, ctx context.Context) (*[]Message, error) {
 
 	msg := new([]Message)
 	cursor, err := collection.Find(ctx, bson.M{

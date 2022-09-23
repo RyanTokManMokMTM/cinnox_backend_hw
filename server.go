@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
@@ -15,8 +16,10 @@ import (
 )
 
 //init server
-var channelToken = "FzEby/2ql8wgNnobUFgE6L58Lk0UljxNOZGg21ff//fo6BZ3aUP2288SBEB6gMdywPy6W0LSUVWSWRqB90fojXDSl5erBMDI1Nelpn0/6h9Fii7zPT4NNwGPSsYshPVFv0p4KQ1i9W2Ofp4vzzydogdB04t89/1O/w1cDnyilFU="
-var ChannelSecret = "3916ee36c100f7be534460f34cc3d3b3"
+const channelToken = "FzEby/2ql8wgNnobUFgE6L58Lk0UljxNOZGg21ff//fo6BZ3aUP2288SBEB6gMdywPy6W0LSUVWSWRqB90fojXDSl5erBMDI1Nelpn0/6h9Fii7zPT4NNwGPSsYshPVFv0p4KQ1i9W2Ofp4vzzydogdB04t89/1O/w1cDnyilFU="
+const channelSecret = "3916ee36c100f7be534460f34cc3d3b3"
+
+var configFileName = flag.String("f", "config_local.yaml", "the config file")
 
 func init() {
 	if err := setUpLineBot(); err != nil {
@@ -28,18 +31,20 @@ func init() {
 	global.Log.SetLevel(logrus.DebugLevel)
 	global.Log.SetFormatter(&logrus.JSONFormatter{})
 	global.Log.SetOutput(os.Stdout)
-
 }
 
 func main() {
-	global.Log.WithFields(logrus.Fields{
-		"Server Name": "Demo",
-	}).Info("starting the server")
+	flag.Parse()
+	log.Println(*configFileName)
 
 	var c config.Config
 	if err := loadSetting(&c); err != nil {
 		panic(err.Error())
 	}
+
+	global.Log.WithFields(logrus.Fields{
+		"Server Name": "Demo",
+	}).Info("starting the server")
 
 	//Server Setting
 	gin.SetMode(c.Server.Mode)
@@ -56,7 +61,7 @@ func main() {
 //SetUp Function
 func setUpLineBot() error {
 	var err error
-	global.Line, err = linebot.New(ChannelSecret, channelToken)
+	global.Line, err = linebot.New(channelSecret, channelToken)
 	if err != nil {
 		return err
 	}
@@ -64,7 +69,9 @@ func setUpLineBot() error {
 }
 
 func loadSetting(c *config.Config) error {
-	s, err := config.NewSetting()
+	//load file
+
+	s, err := config.NewSetting(*configFileName)
 	if err != nil {
 		return nil
 	}
@@ -82,6 +89,5 @@ func loadSetting(c *config.Config) error {
 	c.Server = serverSetting
 	c.Mongo = mongoSetting
 
-	log.Printf("%+v", mongoSetting)
 	return nil
 }

@@ -2,7 +2,6 @@ package dao
 
 import (
 	"context"
-	"errors"
 	"github.com/ryantokmanmokmtm/cinnox_backend_hw/global"
 	"github.com/ryantokmanmokmtm/cinnox_backend_hw/internal/model"
 	"github.com/ryantokmanmokmtm/cinnox_backend_hw/internal/model/message"
@@ -18,7 +17,8 @@ func (d *DAO) InsertOne(ctx context.Context, userToken, msg string, timeStamp in
 			StartTime: timeStamp,
 		},
 	}
-	return m.InsertOne(d.DB, ctx)
+	collection := d.DB.Collection(m.CollectionName())
+	return m.InsertOne(collection, ctx)
 }
 
 func (d *DAO) FindAll(ctx context.Context, userToken string) (*[]message.Message, error) {
@@ -27,9 +27,6 @@ func (d *DAO) FindAll(ctx context.Context, userToken string) (*[]message.Message
 	}
 
 	collection := d.DB.Collection(m.CollectionName())
-	if collection == nil {
-		return nil, errors.New("collection not found")
-	}
 
-	return m.FindAll(d.DB, ctx)
+	return m.FindAll(collection, ctx)
 }

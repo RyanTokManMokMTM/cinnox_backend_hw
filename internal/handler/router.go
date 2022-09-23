@@ -22,9 +22,16 @@ func RegisterHandlers(svc *svc.ServiceContext) *gin.Engine {
 	})
 
 	api := engine.Group("/api/v1")
-	api.POST("/webhook", webhook.WebhookHandler(svc))
-	api.POST("/message/reply", replyhandler.ReplayHandler(svc))
-	api.GET("/messages/get", usermessagehandler.UserMessageHandler(svc))
+	api.POST("/linebot/webhook", webhook.WebhookHandler(svc))
+	api.POST("/linebot/message/reply", replyhandler.ReplayHandler(svc))
+	api.GET("/linebot/user/messages", usermessagehandler.UserMessageHandler(svc))
+
+	engine.HEAD("/", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"msg": "not found",
+		})
+		return
+	})
 
 	return engine
 }

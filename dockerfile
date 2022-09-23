@@ -10,8 +10,9 @@ RUN go build -o /app/server ./server.go
 
 FROM scratch
 
+COPY --from=builder /etc/ssl/certs /etc/ssl/certs
 WORKDIR /app
 COPY --from=builder /app/server /app/server
 COPY --from=builder /build/config /app/config
 
-CMD ["./server"]
+CMD ["./server","-f","config.yml"]

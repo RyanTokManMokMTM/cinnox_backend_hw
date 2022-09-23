@@ -1,19 +1,22 @@
 version: '3.5'
 services:
   mongodb:
+    container_name: ${MONGO_CONTAINER_NAME}
     image: mongo
     restart: always
     ports:
-      - 27017:27017
+      - ${MONGO_HOST_PORT}:27017
     environment:
-        MONGO_INITDB_ROOT_USERNAME: ${MANGO_ROOT}
-        MONGO_INITDB_ROOT_PASSWORD: ${MANGO_ROOT_PW}
+        MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PW}
+    volumes:
+      - /data/db：/data/db
     privileged: true
 
   server:
-    container_name: api_server
+    container_name: ${SERVER_CONTAINER_NAME}
     build:
-      context: ./
+      context: /data:data/db
     restart: always
     privileged: true
     depends_on:
